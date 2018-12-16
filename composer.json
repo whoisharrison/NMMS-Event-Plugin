@@ -1,0 +1,17 @@
+{
+    "name": "mike3488/nmms-event-plugin",
+    "description": "Allows NMMS author the ability to add custom upcoming events.",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Michael Harrison",
+            "email": "mikeharrison34@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}, 
+    "autoload": {
+        "psr-4": {"Includes\\": "./includes"}
+    }
+}

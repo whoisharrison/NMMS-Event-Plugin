@@ -39,47 +39,11 @@ SOFTWARE.
 
 defined('ABSPATH') or die('Something has gone horribly awry');
 
-class NmmsEventPlugin {
-
-  function register(){
-    add_action('admin_enqueue_scripts', array('NmmsEventPlugin', 'enqueue'));
-  }
-
-  function create_post_type(){
-    add_action('init', array($this, 'custom_post_type')); 
-  }
-
-  function custom_post_type(){
-    register_post_type('event', ['public' => true, 'label' => 'Event'])
-  }
-
-  function enqueue(){
-    wp_enqueue_style('pluginstyle', plugins_url('/assets/syle.css', __FILE__));
-    wp_enqueue_style('pluginscript', plugin_url('assets/scripts.js', __FILE__));
-  }
-
-  function activate() {
-    require_once plugin_dir_path( __FILE__) . 'includes/nmms-event-plugin-activate.php'
-    NmmsEventPluginActivate::activate();
-  }
-
-  function deactivate(){
-    require_once plugin_dir_path( __FILE__) . 'includes/nmms-event-plugin-deactivate.php'
-    NmmsEventPluginActivate::deactivate();
-  }
-
+if ( file_exists( dirname( __FILE__) . '/vendor/autoload.php')){
+  require_once dirname( __FILE__) . '/vendor/autoload.php';
 }
 
-if (class_exists('NmmsEventPlugin')) {
-  $nmmsEventPlugin = new NmmsEventPlugin();
-  $nmmsEventPlugin-> register();
+if ( class_exists('Includes\\Init') ) {
+  Includes\Init::register_services();
 }
-
-//activate
-register_activation_hook( __FILE__, array($nmmsEventPlugin, 'activate') );
-
-//deactivate
-register_deactivation_hook( __FILE__, array($nmmsEventPlugin, 'deactivate') );
-
-//uninstall
 
