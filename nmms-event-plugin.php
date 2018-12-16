@@ -10,7 +10,7 @@
  Description: A quick add option for NMMS Events
  Version: 1.0.0
  Author: Michael Harrison
- Author URI: https://whoisharrison.com
+ Author URI: http://whoisharrison.com
  License: MIT License
  Text Domain: nmms-event-plugin
  */
@@ -40,22 +40,13 @@ SOFTWARE.
 defined('ABSPATH') or die('Something has gone horribly awry');
 
 class NmmsEventPlugin {
-  
-  function __construct(){
-    add_action('init', array($this, 'custom_post_type')); 
-  }
 
   function register(){
-    add_action('admin_enqueue_scripts', array($this, 'enqueue'));
+    add_action('admin_enqueue_scripts', array('NmmsEventPlugin', 'enqueue'));
   }
 
-  function activate() {
-    $this->custom_post_type();
-    flush_rewrite_rules();
-  }
-
-  function deactivate(){
-    flush_rewrite_rules();
+  function create_post_type(){
+    add_action('init', array($this, 'custom_post_type')); 
   }
 
   function custom_post_type(){
@@ -65,6 +56,16 @@ class NmmsEventPlugin {
   function enqueue(){
     wp_enqueue_style('pluginstyle', plugins_url('/assets/syle.css', __FILE__));
     wp_enqueue_style('pluginscript', plugin_url('assets/scripts.js', __FILE__));
+  }
+
+  function activate() {
+    require_once plugin_dir_path( __FILE__) . 'includes/nmms-event-plugin-activate.php'
+    NmmsEventPluginActivate::activate();
+  }
+
+  function deactivate(){
+    require_once plugin_dir_path( __FILE__) . 'includes/nmms-event-plugin-deactivate.php'
+    NmmsEventPluginActivate::deactivate();
   }
 
 }
